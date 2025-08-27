@@ -1,0 +1,60 @@
+<mxGraphModel dx="1424" dy="728" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageEnabled="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    
+    <!-- Class: Medico -->
+    <mxCell id="2" value="&lt;div&gt;&lt;u&gt;&lt;b&gt;Medico&lt;/b&gt;&lt;/u&gt;&lt;/div&gt;&lt;hr&gt;&lt;div align=&quot;left&quot;&gt;&amp;nbsp;&lt;b&gt;Atributos:&lt;/b&gt;&lt;br&gt;+ id: int (PK)&lt;br&gt;+ nome: str&lt;br&gt;+ especialidade: str&lt;br&gt;+ email: str&lt;br&gt;+ telefone: str&lt;/div&gt;&lt;hr&gt;&lt;div align=&quot;left&quot;&gt;&amp;nbsp;&lt;b&gt;Métodos:&lt;/b&gt;&lt;br&gt;+ cadastrar(): Medico&lt;br&gt;+ listar_todos(): List[Medico]&lt;br&gt;+ buscar_por_id(id): Medico&lt;br&gt;+ atualizar(id, data): Medico&lt;br&gt;+ deletar(id): bool&lt;/div&gt;" style="shape=umlClass;align=left;verticalAlign=top;fontSize=12;spacingLeft=4;fontStyle=0;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="100" y="100" width="220" height="230" as="geometry"/>
+    </mxCell>
+
+    <!-- Class: Paciente -->
+    <mxCell id="3" value="&lt;div&gt;&lt;u&gt;&lt;b&gt;Paciente&lt;/b&gt;&lt;/u&gt;&lt;/div&gt;&lt;hr&gt;&lt;div align=&quot;left&quot;&gt;&amp;nbsp;&lt;b&gt;Atributos:&lt;/b&gt;&lt;br&gt;+ id: int (PK)&lt;br&gt;+ nome: str&lt;br&gt;+ data_nascimento: date&lt;br&gt;+ telefone: str&lt;br&gt;+ email: str&lt;/div&gt;&lt;hr&gt;&lt;div align=&quot;left&quot;&gt;&amp;nbsp;&lt;b&gt;Métodos:&lt;/b&gt;&lt;br&gt;+ cadastrar(): Paciente&lt;br&gt;+ listar_todos(): List[Paciente]&lt;br&gt;+ buscar_por_id(id): Paciente&lt;br&gt;+ atualizar(id, data): Paciente&lt;br&gt;+ deletar(id): bool&lt;/div&gt;" style="shape=umlClass;align=left;verticalAlign=top;fontSize=12;spacingLeft=4;fontStyle=0;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="450" y="100" width="220" height="230" as="geometry"/>
+    </mxCell>
+    
+    <!-- Class: Consulta -->
+    <mxCell id="4" value="&lt;div&gt;&lt;u&gt;&lt;b&gt;Consulta&lt;/b&gt;&lt;/u&gt;&lt;/div&gt;&lt;hr&gt;&lt;div align=&quot;left&quot;&gt;&amp;nbsp;&lt;b&gt;Atributos:&lt;/b&gt;&lt;br&gt;+ id: int (PK)&lt;br&gt;+ medico_id: int (FK)&lt;br&gt;+ paciente_id: int (FK)&lt;br&gt;+ data: date&lt;br&gt;+ hora: time&lt;br&gt;+ status: str (Agendada, Cancelada, etc.)&lt;/div&gt;&lt;hr&gt;&lt;div align=&quot;left&quot;&gt;&amp;nbsp;&lt;b&gt;Métodos:&lt;/b&gt;&lt;br&gt;+ agendar(data): Consulta&lt;br&gt;+ cancelar(id): bool&lt;br&gt;+ reagendar(id, nova_data, nova_hora): Consulta&lt;br&gt;+ listar_todas(): List[Consulta]&lt;br&gt;+ listar_por_medico(id): List[Consulta]&lt;br&gt;+ listar_por_paciente(id): List[Consulta]&lt;/div&gt;" style="shape=umlClass;align=left;verticalAlign=top;fontSize=12;spacingLeft=4;fontStyle=0;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="280" y="400" width="240" height="280" as="geometry"/>
+    </mxCell>
+
+    <!-- Relationship: Medico 1 -- N Consulta -->
+    <mxCell id="5" value="&lt;div&gt;1&lt;/div&gt;" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERoneToMany;startArrow=ERone;strokeColor=#000000;fontSize=12;orthogonal=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="2" target="4">
+      <mxGeometry x="-0.3333" y="1" relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="210" y="330"/>
+          <mxPoint x="210" y="370"/>
+          <mxPoint x="320" y="370"/>
+          <mxPoint x="320" y="400"/>
+        </Array>
+        <mxPoint x="-20" y="0" as="offset"/>
+        <mxPoint x="20" y="-10" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="6" value="&lt;div&gt;N&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#ffffff;" vertex="1" parent="5">
+      <mxGeometry x="0.0401" y="2" relative="1" as="geometry">
+        <mxPoint x="-11" y="-55" as="offset"/>
+      </mxGeometry>
+    </mxCell>
+
+
+    <!-- Relationship: Paciente 1 -- N Consulta -->
+    <mxCell id="7" value="&lt;div&gt;1&lt;/div&gt;" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERoneToMany;startArrow=ERone;strokeColor=#000000;fontSize=12;orthogonal=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="3" target="4">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="560" y="330"/>
+          <mxPoint x="560" y="370"/>
+          <mxPoint x="480" y="370"/>
+          <mxPoint x="480" y="400"/>
+        </Array>
+        <mxPoint x="-20" y="0" as="offset"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="8" value="&lt;div&gt;N&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#ffffff;" vertex="1" parent="7">
+      <mxGeometry x="-0.0381" y="2" relative="1" as="geometry">
+        <mxPoint x="-9" y="-55" as="offset"/>
+      </mxGeometry>
+    </mxCell>
+    
+  </root>
+</mxGraphModel>
