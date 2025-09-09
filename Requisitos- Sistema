@@ -1,0 +1,208 @@
+Documento de Especificação de Requisitos de Software (SRS)
+1. Introdução
+1.1. Propósito
+Este documento descreve os requisitos funcionais e não funcionais para o Sistema de Agendamento de Consultas Médicas. O objetivo é fornecer uma compreensão clara das funcionalidades do sistema, das restrições e das características esperadas, servindo como base para as fases de design, desenvolvimento, testes e implantação do software.
+1.2. Escopo do Sistema
+O Sistema de Agendamento de Consultas Médicas é uma aplicação web leve que permitirá o cadastro e gerenciamento de médicos e pacientes, bem como a marcação, visualização, reagendamento e cancelamento de consultas. O foco principal é fornecer uma ferramenta eficiente para a gestão básica de agendamentos em um ambiente de consultório ou clínica de pequeno porte.
+1.3. Definições, Acrônimos e Abreviações
+SRS: Software Requirements Specification (Especificação de Requisitos de Software)
+UML: Unified Modeling Language
+FastAPI: Framework web para construir APIs com Python
+SQLite: Sistema de gerenciamento de banco de dados relacional que não requer um processo de servidor separado
+HTML: HyperText Markup Language
+CSS: Cascading Style Sheets
+Jinja: Motor de templates para Python, utilizado pelo FastAPI para renderizar o frontend
+API: Application Programming Interface
+BD: Banco de Dados
+UI: User Interface (Interface do Usuário)
+UX: User Experience (Experiência do Usuário)
+PK: Primary Key (Chave Primária)
+FK: Foreign Key (Chave Estrangeira)
+RF: Requisito Funcional
+RNF: Requisito Não Funcional
+QA: Quality Assurance
+1.4. Referências
+Escopo do Projeto: "Sistema de Agendamento de Consultas Médicas" (fornecido pelo usuário).
+Diagrama de Casos de Uso UML (fornecido pelo usuário).
+Diagrama de Classes (gerado na fase anterior).
+Documentação do FastAPI: fastapi.tiangolo.com
+Documentação do SQLite: sqlite.org
+Documentação do Jinja: jinja.palletsprojects.com
+2. Descrição Geral
+2.1. Perspectiva do Produto
+O Sistema de Agendamento de Consultas Médicas é um produto independente, projetado para ser uma solução leve e autônoma. Ele não se integra diretamente com outros sistemas externos na sua versão inicial. Utilizará uma arquitetura cliente-servidor, onde o frontend (HTML/CSS/Jinja) consumirá uma API RESTful provida pelo backend (FastAPI).
+2.2. Funções do Produto
+O sistema oferecerá as seguintes funcionalidades principais:
+Cadastro e gerenciamento de informações de médicos.
+Cadastro e gerenciamento de informações de pacientes.
+Agendamento de novas consultas, associando médico, paciente, data e hora.
+Visualização da agenda médica (consultas por médico e data).
+Reagendamento de consultas.
+Cancelamento de consultas.
+2.3. Características dos Usuários
+Com base nos casos de uso, inferimos os seguintes papéis e suas características:
+Secretária/Administrador (Ator principal para operações de gerenciamento)
+Conhecimento básico de operação de sistemas web.
+Responsável pelo cadastro de médicos e pacientes.
+Responsável pelo agendamento, reagendamento e cancelamento de consultas.
+Necessita visualizar agendas e consultar a base de dados.
+Médico (Ator que visualiza sua agenda)
+Pode acessar e visualizar sua própria agenda de consultas.
+Não realiza operações de cadastro ou agendamento diretamente (nesta versão inicial).
+(Potencial) Paciente (Ator que agende suas próprias consultas)
+Para uma versão futura, poderia haver um perfil de paciente para visualizar e agendar/cancelar suas próprias consultas. No escopo atual, esta funcionalidade seria intermediada pela Secretária/Administrador. Considerando o caso de uso "Agendar Consulta", ele poderia interagir, mas para a aplicação web leve, a secretária é o foco principal.
+2.4. Restrições
+Tecnológicas:
+Backend deve ser desenvolvido em FastAPI (Python).
+Banco de dados deve ser SQLite.
+Frontend utilizando HTML/CSS/Jinja templates (renderizados pelo FastAPI).
+Modelagem em Draw.io.
+Documentação em Markdown no GitHub.
+De Desempenho: A aplicação deve ser leve e responsiva para um volume moderado de dados (ideal para um consultório pequeno).
+De Segurança: Proteção contra ataques básicos de injeção SQL e XSS, validação de entradas.
+Funcionais: O escopo inicial não inclui autenticação/autorização de usuários ou perfis complexos de permissão.
+2.5. Premissas e Dependências
+Premissas:
+Os usuários (Secretária/Administrador) possuem acesso a um navegador web e conexão à internet.
+O ambiente de execução (servidor) será capaz de rodar uma aplicação Python FastAPI.
+Dependências:
+Dependência de bibliotecas Python para FastAPI, gerenciamento de banco de dados (ex: SQLAlchemy ou sqlite3), e motor de templates (Jinja2).
+A interface de usuário dependerá da correta implementação da API do backend.
+3. Requisitos Funcionais (RF)
+3.1. RF1: Gerenciamento de Médicos
+O sistema deve permitir gerenciar as informações dos médicos.
+RF1.1 Cadastrar Médico
+O sistema deve permitir à Secretária/Administrador cadastrar um novo médico.
+Deve coletar: nome completo, especialidade, e-mail (único), telefone de contato.
+O sistema deve validar que o e-mail não é duplicado.
+O sistema deve armazenar as informações do médico no BD.
+RF1.2 Visualizar Médicos
+O sistema deve permitir à Secretária/Administrador visualizar uma lista de todos os médicos cadastrados.
+A lista deve exibir pelo menos nome e especialidade.
+RF1.3 Atualizar Médico
+O sistema deve permitir à Secretária/Administrador editar as informações de um médico existente (nome, especialidade, e-mail, telefone).
+O sistema deve validar a unicidade do e-mail após a edição.
+RF1.4 Excluir Médico
+O sistema deve permitir à Secretária/Administrador remover um médico do sistema.
+Regra de Negócio: Um médico não poderá ser excluído se tiver consultas agendadas, ativas ou futuras. O sistema deve emitir um aviso e impedir a exclusão nestes casos.
+3.2. RF2: Gerenciamento de Pacientes
+O sistema deve permitir gerenciar as informações dos pacientes. (Diretamente relacionado ao caso de uso "Cadastrar Pacientes").
+RF2.1 Cadastrar Paciente
+O sistema deve permitir à Secretária/Administrador cadastrar um novo paciente.
+Deve coletar: nome completo, data de nascimento, telefone de contato, e-mail (único).
+O sistema deve validar que o e-mail não é duplicado.
+O sistema deve armazenar as informações do paciente no BD.
+RF2.2 Visualizar Pacientes
+O sistema deve permitir à Secretária/Administrador visualizar uma lista de todos os pacientes cadastrados.
+A lista deve exibir pelo menos nome e telefone.
+RF2.3 Atualizar Paciente
+O sistema deve permitir à Secretária/Administrador editar as informações de um paciente existente (nome, data de nascimento, telefone, e-mail).
+O sistema deve validar a unicidade do e-mail após a edição.
+RF2.4 Excluir Paciente
+O sistema deve permitir à Secretária/Administrador remover um paciente do sistema.
+Regra de Negócio: Um paciente não poderá ser excluído se tiver consultas agendadas, ativas ou futuras. O sistema deve emitir um aviso e impedir a exclusão nestes casos.
+3.3. RF3: Gerenciamento de Consultas
+O sistema deve permitir gerenciar as consultas. (Diretamente relacionado aos casos de uso "Agendar Consulta" e "Reagendar/Desmarcar Consulta").
+RF3.1 Agendar Consulta
+O sistema deve permitir à Secretária/Administrador agendar uma nova consulta.
+Deve ser possível selecionar um médico e um paciente já cadastrados.
+Deve ser informado data e hora da consulta.
+Regra de Negócio: O sistema deve verificar a disponibilidade do médico para o horário selecionado (não permitir agendamento duplo para o mesmo médico no mesmo slot de tempo).
+Regra de Negócio: A data e hora da consulta devem ser futuras.
+O sistema deve registrar a consulta com status "Agendada".
+RF3.2 Cancelar Consulta
+O sistema deve permitir à Secretária/Administrador cancelar uma consulta existente.
+Ao cancelar, o status da consulta deve ser alterado para "Cancelada" (a consulta não será excluída fisicamente).
+RF3.3 Reagendar Consulta
+O sistema deve permitir à Secretária/Administrador reagendar uma consulta existente, alterando sua data e/ou hora.
+Regra de Negócio: Ao reagendar, o sistema deve verificar a disponibilidade do médico para o novo horário.
+A consulta original (antiga) pode ser mantida com um status de "Reagendada" ou simplesmente atualizada. Para o escopo leve, a atualização é mais simples.
+3.4. RF4: Visualização da Agenda Médica
+O sistema deve fornecer uma visão da agenda de consultas. (Diretamente relacionado ao caso de uso "Visualizar Agenda Médica" e "Consultar Base").
+RF4.1 Visualizar Consultas por Médico
+O sistema deve permitir à Secretária/Administrador e ao Médico visualizar as consultas agendadas para um médico específico.
+Deve ser possível filtrar por um período (ex: dia, semana).
+A lista deve exibir paciente, data, hora e status da consulta.
+RF4.2 Visualizar Consultas por Paciente
+O sistema deve permitir à Secretária/Administrador visualizar as consultas agendadas para um paciente específico.
+A lista deve exibir médico, data, hora e status da consulta.
+RF4.3 Consultar Base de Dados
+O sistema deve fornecer funcionalidades de listagem básicas para todas as entidades (médicos, pacientes, consultas) que podem ser utilizadas para operações de consulta genérica, alinhada ao caso de uso "Consultar Base".
+4. Requisitos Não Funcionais (RNF)
+4.1. RNF1: Desempenho
+RNF1.1 Tempo de Resposta: Todas as operações (cadastro, listagem, agendamento) devem ter um tempo de resposta inferior a 2 segundos em condições normais de uso (para até 10 usuários simultâneos e banco de dados com até 10.000 registros de consultas).
+RNF1.2 Carga: O sistema deve suportar simultaneamente até 10 usuários sem degradação perceptível de desempenho.
+4.2. RNF2: Segurança
+RNF2.1 Validação de Entrada: O sistema deve validar todas as entradas do usuário para prevenir injeção SQL, XSS e outros ataques comuns baseados em entrada.
+RNF2.2 Proteção de Dados: Os dados sensíveis (e-mails, telefones) armazenados devem ser protegidos contra acesso não autorizado via aplicação (sem interface de autenticação, o foco é na prevenção de exploração de vulnerabilidades da API e DB).
+RNF2.3 Acesso Indevido: Considerando a ausência de autenticação e autorização, o sistema deve ser robusto contra manipulação direta da API por usuários não intencionais, minimizando pontos de entrada para operações críticas via IDs diretamente na URL sem validação de contexto. (Isso será tratado mais a fundo no design da API e dos templates).
+4.3. RNF3: Usabilidade
+RNF3.1 Interface Intuitiva: A interface do usuário deve ser clara, fácil de navegar e autoexplicativa para usuários com conhecimento básico de internet.
+RNF3.2 Feedback: O sistema deve fornecer feedback claro ao usuário sobre o sucesso ou falha das operações (mensagens de sucesso, erro, validação de campos).
+RNF3.3 Consistência: A UI deve manter um layout consistente em todas as telas e funcionalidades.
+4.4. RNF4: Confiabilidade
+RNF4.1 Disponibilidade: O sistema deve estar disponível 95% do tempo durante o horário comercial.
+RNF4.2 Tratamento de Erros: O sistema deve lidar gracefully com erros internos (ex: falha de conexão com BD), logando-os e fornecendo uma mensagem amigável ao usuário, se apropriado.
+4.5. RNF5: Manutenibilidade
+RNF5.1 Modularidade: O código do backend (FastAPI) deve ser estruturado em módulos lógicos (e.g., rotas, serviços, modelos, banco de dados) para facilitar a manutenção e futuras extensões.
+RNF5.2 Clareza do Código: O código deve ser bem comentado e seguir as melhores práticas de Python (PEP 8).
+4.6. RNF6: Portabilidade
+RNF6.1 Multiplataforma: Por ser uma aplicação web, o sistema deve ser acessível e funcional em navegadores modernos (Chrome, Firefox, Edge, Safari) em diferentes sistemas operacionais (Windows, macOS, Linux).
+RNF6.2 Ambiente de Execução: O FastAPI com Python é naturalmente portável, permitindo fácil implantação em diferentes ambientes de servidor Linux/Windows.
+4.7. RNF7: Considerações de AI-Driven Software Engineering
+RNF7.1 Automação de Testes: O sistema deve ser desenvolvido com uma forte ênfase em testes automatizados (unitários, de integração, e-to-e via Playwright/Selenium ou similar para o frontend), cobrindo as principais funcionalidades para garantir a qualidade do software e facilitar a regressão.
+RNF7.2 Padrões de Código: Implementar ferramentas de linting (ex: Black, Flake8) e formatação automática (ex: pre-commit hooks) para manter a consistência e a qualidade do código.
+RNF7.3 CI/CD (Consideração Futura): Preparar o projeto para futura integração contínua e entrega contínua, mesmo que não seja implementado na primeira fase.
+RNF7.4 Documentação como Código: Utilizar docstrings em Python e manter a documentação Markdown no GitHub sincronizada com as mudanças do código.
+5. Requisitos de Interface
+5.1. Interface de Usuário (Frontend: HTML/CSS/Jinja)
+RNF5.1.1 Páginas Principais:
+Página Inicial (Dashboard simples, navegação).
+Formulário de Cadastro/Edição de Médico.
+Lista de Médicos (com opções de editar/excluir).
+Formulário de Cadastro/Edição de Paciente.
+Lista de Pacientes (com opções de editar/excluir).
+Formulário de Agendamento/Edição de Consulta.
+Lista de Consultas (com filtros, opções de cancelar/reagendar).
+Página de visualização da Agenda (seleção de médico/data).
+RNF5.1.2 Elementos Comuns: Navegação (cabeçalho/menu), rodapé, mensagens de feedback, campos de formulário claros e rótulos.
+RNF5.1.3 Responsividade (Básico): A interface deve ser minimamente responsiva para se ajustar a diferentes tamanhos de tela.
+5.2. Interface de Software (Backend API: FastAPI)
+A API deve ser RESTful, utilizando os métodos HTTP padrão (GET, POST, PUT, DELETE).
+Os endpoints devem ser intuitivos (ex: /api/v1/medicos, /api/v1/pacientes, /api/v1/consultas).
+A API deve retornar respostas no formato JSON.
+O FastAPI fornecerá documentação OpenAPI (Swagger UI/ReDoc) automática para a API.
+5.3. Interface de Comunicação
+Protocolo: HTTP/HTTPS para comunicação entre frontend e backend.
+Portas: A porta padrão do servidor web (ex: 80, 443) ou uma porta específica de desenvolvimento (ex: 8000).
+6. Requisitos de Dados
+6.1. Esquema de Banco de Dados (SQLite)
+Baseado no Diagrama de Classes e DER:
+Tabela medicos:
+id INTEGER PRIMARY KEY AUTOINCREMENT
+nome TEXT NOT NULL
+especialidade TEXT NOT NULL
+email TEXT UNIQUE NOT NULL
+telefone TEXT
+Tabela pacientes:
+id INTEGER PRIMARY KEY AUTOINCREMENT
+nome TEXT NOT NULL
+data_nascimento DATE NOT NULL
+email TEXT UNIQUE NOT NULL
+telefone TEXT
+Tabela consultas:
+id INTEGER PRIMARY KEY AUTOINCREMENT
+medico_id INTEGER NOT NULL, FOREIGN KEY (medico_id) REFERENCES medicos(id)
+paciente_id INTEGER NOT NULL, FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+data DATE NOT NULL
+hora TIME NOT NULL
+status TEXT NOT NULL (valores: 'Agendada', 'Cancelada', 'Concluída', 'Reagendada')
+Índices: A serem definidos para otimização de consultas (ex: em medico_id, paciente_id, data, hora).
+7. Outros Requisitos
+7.1. Documentação
+O código fonte deve ser bem documentado com comentários e docstrings (Python).
+A documentação do projeto (instalação, uso, estrutura do projeto) deve ser mantida em arquivos Markdown no repositório do GitHub.
+Diagramas de arquitetura e modelagem (Draw.io) devem ser armazenados e referenciados no repositório.
+7.2. Ambiente de Desenvolvimento/Produção
+Desenvolvimento: Python 3.9+, pip, ambiente virtual.
+Produção: Sistema operacional baseado em Linux, servidor ASGI (ex: Uvicorn) para o FastAPI.
