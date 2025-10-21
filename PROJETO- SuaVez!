@@ -1,1 +1,35 @@
+# 🩺 SuaVez! — Sistema Web de Gerenciamento de Filas em Clínicas e Hospitais
+
+O **SuaVez!** é um sistema web que substitui as senhas em papel por uma gestão digital e em tempo real das filas de atendimento em clínicas, consultórios e hospitais.
+
+---
+
+## 🚀 Tecnologias
+
+| Camada | Tecnologia | Descrição |
+|---------|-------------|------------|
+| Backend | FastAPI (Python) | Criação de APIs REST e lógica de negócio |
+| Banco de Dados | SQLite (MVP) / PostgreSQL (produção) | Armazenamento de dados e histórico |
+| Frontend | HTML, CSS, Jinja2 | Interface responsiva |
+| Comunicação | SSE ou WebSockets | Atualização em tempo real dos painéis |
+| Diagramas | draw.io | Modelagem visual (BD e arquitetura) |
+
+---
+
+## ⚙️ Instalação e Execução
+
+```bash
+# Clonar o repositório
+git clone https://github.com/seuusuario/suavez.git
+cd suavez
+
+# Criar ambiente virtual
+python -m venv venv
+source venv/bin/activate  # (ou venv\Scripts\activate no Windows)
+
+# Instalar dependências
+pip install -r requirements.txt
+
+# Rodar o servidor
+uvicorn app.main:app --reload
 
